@@ -1,6 +1,7 @@
 package de.klein_max.adventcalendar.controllers;
 
 import de.klein_max.adventcalendar.Main;
+import de.klein_max.adventcalendar.tools.SQLite3;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -128,6 +129,12 @@ public class HomeSceneController {
 
     private void openDoor(int id){
         int day = Integer.parseInt(new SimpleDateFormat("d").format(new Date()));
+        if (!SQLite3.exists(id)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Day \""+id+"\" has no content in database!\nPlease open the settings to add some things.", ButtonType.OK);
+            alert.show();
+            return;
+        }
+
         if (day == id){
             StackPane stackPane = doors.get(id-1);
             ImageView imageView = (ImageView) stackPane.getChildren().get(0);
