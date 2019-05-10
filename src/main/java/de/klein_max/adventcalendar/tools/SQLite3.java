@@ -8,12 +8,16 @@ import java.util.List;
 
 public class SQLite3 {
     private static Connection c;
+    private static PreparedStatement ps1;
+    private static PreparedStatement ps2;
+    private static PreparedStatement ps3;
+    private static PreparedStatement ps4;
+    private static PreparedStatement ps5;
 
     public static List<GiftObject> getGiftObjects(int day) {
         List<GiftObject> output = new ArrayList<>();
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM GiftObjects");
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps5.executeQuery();
             while (rs.next()) {
                 output.add(new GiftObject(
                         rs.getInt("gift_day"),
@@ -22,7 +26,6 @@ public class SQLite3 {
                         DevTweaks.convertTextToImage(rs.getString("image"))
                 ));
             }
-            ps.close();
             rs.close();
             return output;
         } catch (SQLException e) {
@@ -33,9 +36,8 @@ public class SQLite3 {
 
     public static GiftObject getGiftObject(int day) {
         try {
-            PreparedStatement ps = c.prepareStatement("SELECT * FROM GiftObjects WHERE gift_day=?");
-            ps.setInt(1, day);
-            ResultSet rs = ps.executeQuery();
+            ps1.setInt(1, day);
+            ResultSet rs = ps1.executeQuery();
             while (rs.next()) {
                 return new GiftObject(day,
                         rs.getString("title"),
@@ -43,7 +45,6 @@ public class SQLite3 {
                         DevTweaks.convertTextToImage(rs.getString("image")));
             }
             rs.close();
-            ps.close();
             return null;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,15 +54,55 @@ public class SQLite3 {
 
     public static void addOrReplaceGiftObject(GiftObject giftObject) {
         try {
-            PreparedStatement ps = c.prepareStatement("insert or replace into GiftObjects (gift_day, title, description, image) values (" +
-                    +giftObject.getDay() + ", ?, ?, ?);");
-            ps.setString(1, giftObject.getTitle());
-            ps.setString(2, giftObject.getDescription());
-            ps.setString(3, DevTweaks.convertImageToText(giftObject.getImage()));
-            ps.execute();
-            ps.close();
+            ps2.setInt(1, giftObject.getDay());
+            ps2.setString(2, giftObject.getTitle());
+            ps2.setString(3, giftObject.getDescription());
+            ps2.setString(4, DevTweaks.convertImageToText(giftObject.getImage()));
+            ps2.execute();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static boolean exists(int day){
+        try {
+            ps3.setInt(1, day);
+            ResultSet rs = ps3.executeQuery();
+            boolean end = rs.next();
+            rs.close();
+            return end;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void changeState(int day, int state){
+        // 1 - opened
+        try {
+            ps4.setInt(1, state);
+            ps4.setInt(2, day);
+            ps4.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean createTables() {
+        try {
+
+            PreparedStatement ps = c.prepareStatement("CREATE TABLE IF NOT EXISTS GiftObjects " +
+                    "(gift_day          INTEGER     PRIMARY KEY NOT NULL," +
+                    " title             TEXT        NULL, " +
+                    " description       TEXT        NOT NULL, " +
+                    " image             TEXT," +
+                    " state             INTEGER     DEFAULT 0)");
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            return false;
         }
     }
 
@@ -73,6 +114,7 @@ public class SQLite3 {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite: data.db");
             createTables();
+            initPreparedStatements();
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             status = false;
@@ -80,20 +122,16 @@ public class SQLite3 {
         return status;
     }
 
-    private static boolean createTables() {
+    private static void initPreparedStatements(){
         try {
-
-            PreparedStatement ps = c.prepareStatement("CREATE TABLE IF NOT EXISTS GiftObjects " +
-                    "(gift_day          INTEGER     PRIMARY KEY NOT NULL," +
-                    " title             TEXT        NULL, " +
-                    " description       TEXT        NOT NULL, " +
-                    " image             TEXT)");
-            ps.executeUpdate();
-            ps.close();
-            return true;
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            return false;
+            ps1 = c.prepareStatement("SELECT * FROM GiftObjects");
+            ps2 = c.prepareStatement("insert or replace into GiftObjects (gift_day, title, description, image) values " +
+                    "(?, ?, ?, ?);");
+            ps3 = c.prepareStatement("SELECT * FROM GiftObjects WHERE gift_day=?");
+            ps4 = c.prepareStatement("UPDATE GiftObjects SET state=? WHERE gift_day=?");
+            ps5 = c.prepareStatement("SELECT * FROM GiftObjects");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
