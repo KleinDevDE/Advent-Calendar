@@ -50,12 +50,17 @@ public class DoorSceneController {
 
     public void onImageClicked(MouseEvent mouseEvent) {
         Stage stage1 = new Stage(StageStyle.UNDECORATED);
-        stage1.setWidth(300);
-        stage1.setHeight(200);
         Pane pane = new Pane();
         pane.getChildren().add(image);
         stage1.setScene(new Scene(pane));
         stage1.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage1.close();
+            }
+        });
+        stage1.setScene(new Scene(pane));
+        pane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 stage1.close();
