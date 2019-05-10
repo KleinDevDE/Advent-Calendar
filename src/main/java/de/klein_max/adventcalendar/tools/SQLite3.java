@@ -31,7 +31,7 @@ public class SQLite3 {
         return null;
     }
 
-    public static GiftObject getGiftObject(int day){
+    public static GiftObject getGiftObject(int day) {
         try {
             PreparedStatement ps = c.prepareStatement("SELECT * FROM GiftObjects WHERE gift_day=?");
             ps.setInt(1, day);
@@ -45,30 +45,27 @@ public class SQLite3 {
             rs.close();
             ps.close();
             return null;
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static void addOrReplaceGiftObject(GiftObject giftObject){
+    public static void addOrReplaceGiftObject(GiftObject giftObject) {
         try {
-            c.setAutoCommit(false);
-
-            PreparedStatement ps = c.prepareStatement("insert or replace into GiftObjects (gift_day, title, description, image) values " +
-                    "(?, ?, ?, ?);");
-            ps.setInt(1, giftObject.getDay());
-            ps.setString(2, giftObject.getTitle());
-            ps.setString(3, giftObject.getDescription());
-            ps.setString(4, DevTweaks.convertImageToText(giftObject.getImage()));
+            PreparedStatement ps = c.prepareStatement("insert or replace into GiftObjects (gift_day, title, description, image) values (" +
+                    +giftObject.getDay() + ", ?, ?, ?);");
+            ps.setString(1, giftObject.getTitle());
+            ps.setString(2, giftObject.getDescription());
+            ps.setString(3, DevTweaks.convertImageToText(giftObject.getImage()));
+            ps.execute();
             ps.close();
-            c.commit();
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static boolean start(){
+    public static boolean start() {
         boolean status = true;
         boolean failure = false;
         c = null;
@@ -76,14 +73,14 @@ public class SQLite3 {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite: data.db");
             createTables();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             status = false;
         }
         return status;
     }
 
-    private static boolean createTables(){
+    private static boolean createTables() {
         try {
 
             PreparedStatement ps = c.prepareStatement("CREATE TABLE IF NOT EXISTS GiftObjects " +
@@ -94,8 +91,8 @@ public class SQLite3 {
             ps.executeUpdate();
             ps.close();
             return true;
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
             return false;
         }
     }

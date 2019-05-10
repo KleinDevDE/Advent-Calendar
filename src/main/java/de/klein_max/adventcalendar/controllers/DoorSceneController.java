@@ -8,10 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
@@ -46,26 +43,5 @@ public class DoorSceneController {
         }
 
         stage.show();
-    }
-
-    public void onImageClicked(MouseEvent mouseEvent) {
-        Stage stage1 = new Stage(StageStyle.UNDECORATED);
-        Pane pane = new Pane();
-        pane.getChildren().add(image);
-        stage1.setScene(new Scene(pane));
-        stage1.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage1.close();
-            }
-        });
-        stage1.setScene(new Scene(pane));
-        pane.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage1.close();
-            }
-        });
-        stage1.show();
     }
 }

@@ -11,7 +11,7 @@
     <stylesheets>
         <URL value="@../style.css" />
     </stylesheets>
-    <ImageView fx:id="image" fitHeight="142.0" fitWidth="200.0" layoutX="41.0" layoutY="14.0" onMouseClicked="#onImageClicked" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="image" fitHeight="142.0" fitWidth="200.0" layoutX="41.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
     <Label fx:id="title" alignment="CENTER" layoutX="6.0" layoutY="164.0" prefHeight="25.0" prefWidth="270.0" text="Test" textFill="WHITE">
         <font>
           <Font name="Arial Bold" size="15.0" />
