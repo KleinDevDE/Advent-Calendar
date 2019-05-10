@@ -67,6 +67,8 @@ public class HomeSceneController {
                                 }
                             });
                             label.setCursor(Cursor.HAND);
+                            if (SQLite3.exists(count+1) && SQLite3.getState(count+1) == 1)
+                                door.setStyle("-fx-blend-mode: soft-light;");
                         } else if (count+1 < day){
                             int finalCount = count+1;
                             label.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -140,6 +142,7 @@ public class HomeSceneController {
             ImageView imageView = (ImageView) stackPane.getChildren().get(0);
             imageView.setStyle("-fx-blend-mode: soft-light;");
             DoorSceneController.open(id);
+            SQLite3.changeState(id, 1);
             //TODO save, that door was opened
         } else if(id < day){
             DoorSceneController.open(id);

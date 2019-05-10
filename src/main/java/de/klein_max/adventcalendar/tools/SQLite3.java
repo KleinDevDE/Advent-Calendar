@@ -13,11 +13,12 @@ public class SQLite3 {
     private static PreparedStatement ps3;
     private static PreparedStatement ps4;
     private static PreparedStatement ps5;
+    private static PreparedStatement ps6;
 
     public static List<GiftObject> getGiftObjects(int day) {
         List<GiftObject> output = new ArrayList<>();
         try {
-            ResultSet rs = ps5.executeQuery();
+            ResultSet rs = ps1.executeQuery();
             while (rs.next()) {
                 output.add(new GiftObject(
                         rs.getInt("gift_day"),
@@ -36,8 +37,8 @@ public class SQLite3 {
 
     public static GiftObject getGiftObject(int day) {
         try {
-            ps1.setInt(1, day);
-            ResultSet rs = ps1.executeQuery();
+            ps3.setInt(1, day);
+            ResultSet rs = ps3.executeQuery();
             while (rs.next()) {
                 return new GiftObject(day,
                         rs.getString("title"),
@@ -88,6 +89,18 @@ public class SQLite3 {
         }
     }
 
+    public static Integer getState(int day){
+        try {
+            ps5.setInt(1, day);
+            ResultSet rs = ps5.executeQuery();
+            rs.next();
+            return rs.getInt("state");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static boolean createTables() {
         try {
 
@@ -129,7 +142,7 @@ public class SQLite3 {
                     "(?, ?, ?, ?);");
             ps3 = c.prepareStatement("SELECT * FROM GiftObjects WHERE gift_day=?");
             ps4 = c.prepareStatement("UPDATE GiftObjects SET state=? WHERE gift_day=?");
-            ps5 = c.prepareStatement("SELECT * FROM GiftObjects");
+            ps5 = c.prepareStatement("SELECT state FROM GiftObjects WHERE gift_day=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
