@@ -22,7 +22,7 @@
          </children></Pane>
       <ImageView fx:id="informationButton" fitHeight="22.0" fitWidth="34.0" layoutX="3.0" layoutY="410.0" onMouseClicked="#onInformationClicked" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../img/baseline_info_black_18dp.png" />
+            <Image url="@../img/icon-white.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
