@@ -1,0 +1,31 @@
+.background {
+    -fx-background-color: #1a4454;
+}
+
+.about_background{
+    -fx-background-color: white;
+}
+
+.closeButton {
+    -fx-background-color: rgba(147, 0, 2, 0.67);
+    -fx-background-radius: 0;
+}
+
+.closeButton:hover {
+    -fx-background-color: rgba(183, 0, 3, 0.73);
+}
+
+.minimizeButton{
+    -fx-background-color: #1a4454;
+    -fx-background-radius: 0;
+}
+
+.minimizeButton:hover {
+    -fx-background-color: rgba(47, 124, 153, 0.63);
+    cursor: pointer;
+}
+
+.imageframe {
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+}

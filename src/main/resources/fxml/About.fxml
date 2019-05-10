@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="91.0" prefWidth="301.0" styleClass="about_background" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.klein_max.adventcalendar.controllers.AboutSceneController">
+   <stylesheets>
+      <URL value="@../style.css" />
+   </stylesheets>
+   <children>
+      <ImageView fitHeight="65.0" fitWidth="74.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/kleindev.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="90.0" layoutY="14.0" text="KleinDev">
+         <font>
+            <Font name="Arial" size="22.0" />
+         </font>
+      </Label>
+      <Label layoutX="214.0" layoutY="63.0" onMouseClicked="#githubClicked" text="\@KleinDevDE" textFill="#1c39f8" underline="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Label>
+      <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="195.0" layoutY="64.0" onMouseClicked="#githubClicked" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../img/github.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Label layoutX="92.0" layoutY="38.0" text="Maximilian Klein" />
+      <Label layoutX="225.0" layoutY="19.0" text="v1.0-pre1" />
+   </children>
+</AnchorPane>
